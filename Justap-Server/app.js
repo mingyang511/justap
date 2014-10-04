@@ -2,7 +2,7 @@
 (function() {
   var BASE_URL, Firebase, myF, _;
 
-  BASE_URL = 'https://fiery-fire-7775.firebaseio.com/';
+  BASE_URL = 'https://shining-fire-3470.firebaseio.com/';
 
   _ = require('lodash');
 
@@ -34,6 +34,7 @@
       return pool;
     });
     o = {};
+    o['status'] = 0;
     o[matchedVals[0]] = {
       score: 0
     };
@@ -41,8 +42,8 @@
       score: 0
     };
     match = (myF.child('matches').push(o)).name();
-    myF.child('users').child(matchedVals[0]).child('matches').child(match).set(match);
-    myF.child('users').child(matchedVals[1]).child('matches').child(match).set(match);
+    myF.child('users').child(matchedVals[0]).child('matches').child(match).set(-1);
+    myF.child('users').child(matchedVals[1]).child('matches').child(match).set(1);
     myF.child('users').child(matchedVals[0]).child('state').set('match');
     return myF.child('users').child(matchedVals[1]).child('state').set('match');
   });

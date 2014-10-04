@@ -24,11 +24,12 @@ myF.child('pool').on 'value', (snapshot) ->
     delete pool[matchedKeys[1]]
     pool
   o = {}
+  o['status'] = 0
   o[matchedVals[0]] = score: 0
   o[matchedVals[1]] = score: 0
   match = (myF.child('matches').push o).name()
-  myF.child('users').child(matchedVals[0]).child('matches').child(match).set(match)
-  myF.child('users').child(matchedVals[1]).child('matches').child(match).set(match)
+  myF.child('users').child(matchedVals[0]).child('matches').child(match).set(-1)
+  myF.child('users').child(matchedVals[1]).child('matches').child(match).set(1)
   myF.child('users').child(matchedVals[0]).child('state').set('match')
   myF.child('users').child(matchedVals[1]).child('state').set('match')
 
@@ -37,6 +38,7 @@ myF.child('pool').on 'value', (snapshot) ->
 #   <pool_id>: <user_id>
 # matches:
 #   <match_id>:
+#     status: -1 | 0 | 1
 #     <user_id>:
 #       score: 0
 #     <user_id>:
@@ -45,8 +47,8 @@ myF.child('pool').on 'value', (snapshot) ->
 #   <user_id>:
 #     state: pool | match
 #     matches:
-#       <match_id>: <match_id>
-#       <match_id>: <match_id>
+#       <match_id>: -1 | 1
+#       <match_id>: -1 | 1
 #   <user_id>:
 #     ...
 
