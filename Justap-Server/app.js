@@ -40,7 +40,7 @@
     o[matchedVals[1]] = {
       score: 0
     };
-    match = (myF.child('match').push(o)).name();
+    match = (myF.child('matches').push(o)).name();
     myF.child('users').child(matchedVals[0]).child('matches').child(match).set(match_id);
     myF.child('users').child(matchedVals[1]).child('matches').child(match).set(match_id);
     myF.child('users').child(matchedVals[0]).child('state').set('match');
