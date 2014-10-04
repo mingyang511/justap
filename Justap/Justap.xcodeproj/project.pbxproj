@@ -821,6 +821,8 @@
 				<string>AppIcon</string>
 				<key>INFOPLIST_FILE</key>
 				<string>Justap/Info.plist</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>7.1</string>
 				<key>LD_RUNPATH_SEARCH_PATHS</key>
 				<string>$(inherited) @executable_path/Frameworks</string>
 				<key>PRODUCT_NAME</key>
@@ -841,6 +843,8 @@
 				<string>AppIcon</string>
 				<key>INFOPLIST_FILE</key>
 				<string>Justap/Info.plist</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>7.1</string>
 				<key>LD_RUNPATH_SEARCH_PATHS</key>
 				<string>$(inherited) @executable_path/Frameworks</string>
 				<key>PRODUCT_NAME</key>
