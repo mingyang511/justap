@@ -1,0 +1,23 @@
+{
+  "name": "Justap-Server",
+  "version": "0.0.1",
+  "description": "CalHacks App",
+  "main": "app.js",
+  "dependencies": {
+    "firebase": "^1.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/inkdot/justap"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/inkdot/justap/issues"
+  },
+  "homepage": "https://github.com/inkdot/justap"
+}
