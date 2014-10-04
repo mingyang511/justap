@@ -25,6 +25,24 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
   background-color: #1ABC9C;
 }
 
-.blbg {
-  background-color: #000000;
+.h1-padding {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.h2-padding {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+h2 {
+  font-size: 25px;
+}
+
+.right {
+   text-align: right;
+}
+
+.blbg{
+  background-color: #F0F0F0;
 }
