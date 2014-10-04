@@ -10,6 +10,9 @@
 
 @interface ViewController : UIViewController
 
+- (void)gameReady;
+- (void)winScore;
+- (void)looseScore;
 
 @end
 
