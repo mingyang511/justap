@@ -10,21 +10,17 @@
 ###
 angular
   .module('tapWebappApp', [
-    'ngAnimate',
-    'ngCookies',
-    'ngResource',
-    'ngRoute',
-    'ngSanitize',
+    'ngAnimate'
+    'ngCookies'
+    'ngResource'
+    'ngRoute'
+    'ngSanitize'
     'ngTouch'
+    'firebase'
   ])
   .config ($routeProvider) ->
     $routeProvider
       .when '/',
         templateUrl: 'views/main.html'
         controller: 'MainCtrl'
-      .when '/about',
-        templateUrl: 'views/about.html'
-        controller: 'AboutCtrl'
-      .otherwise
-        redirectTo: '/'
 
