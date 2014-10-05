@@ -15,6 +15,7 @@
 #import "UIColor+FlatUI.h"
 #import "UIFont+FlatUI.h"
 
+#import <Firebase/Firebase.h>
 #import <POP/POP.h>
 
 @interface ViewController () <FUIAlertViewDelegate>
@@ -32,6 +33,10 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *countdownLabel;
 @property (assign, nonatomic) NSInteger count;
+
+@property NSString *userId;
+@property NSString *oppId;
+@property (assign) NSInteger goodBit;
 @end
 
 @implementation ViewController
@@ -235,13 +240,47 @@
        springBounciness:10
             springSpeed:5];
     
+    // Create a reference to a Firebase location
+    Firebase *myRootRef = [[Firebase alloc] initWithUrl:@"https://shining-fire-3470.firebaseio.com/"];
+    // Write data to Firebase
+    Firebase *userRef = [[myRootRef childByAppendingPath:@"users"] childByAutoId];
+    [userRef setValue:@{@"id": @1}];
     
-    //For testing
-    [NSTimer scheduledTimerWithTimeInterval:4
-                                     target:self
-                                   selector:@selector(matchedOpponent)
-                                   userInfo:nil
-                                    repeats:NO];
+    
+    // Read data and react to changes
+    [userRef observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
+        if (snapshot.value[@"state"] && [snapshot.value[@"state"] isEqualToString:@"match"]) {
+            NSString *matchId = [snapshot.value[@"matches"] allKeys][0];
+            Firebase *matchRef = [[myRootRef childByAppendingPath:@"matches"] childByAppendingPath:matchId];
+            [matchRef observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snap) {
+                NSLog(@"%@", snap.value);
+            }];
+
+            [self matchedOpponent];
+        }
+    }];
+
+//    [NSTimer scheduledTimerWithTimeInterval:4
+//                                     target:self
+//                                   selector:@selector(matchedOpponent)
+//                                   userInfo:nil
+//                                    repeats:NO];
+}
+
+- (void)updateUi
+{
+    
+}
+
+- (void)updateServer
+{
+    
+}
+
+- (void)matchObjectListener
+{
+    [self updateUi];
+    [self updateServer];
 }
 
 - (void)matchedOpponent
