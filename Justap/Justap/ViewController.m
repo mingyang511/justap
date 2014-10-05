@@ -85,6 +85,7 @@
 - (void)prepareViews
 {
     [self updateUiToNetural];
+    self.tapButton.userInteractionEnabled = YES;
     self.tapButton.shadowHeight = 10.0f;
     self.tapButton.cornerRadius = self.tapButton.frame.size.height/2;
     self.tapButton.titleLabel.font = [UIFont boldFlatFontOfSize:16];
@@ -307,6 +308,11 @@
     self.tapButton.shadowColor = [UIColor colorFromHexCode:@"FF4500"];
 }
 
+- (void)updateScore:(NSInteger)score
+{
+    
+}
+
 - (void)matchedOpponent
 {
     //Move out
@@ -401,10 +407,9 @@
 - (void)tapAction
 {
     //For testing
-//    [self gameEnds];
-    static NSInteger status = 1;
-    status = - status;
-    [self updateUi:status];
+    [self gameEnds];
+//    static NSInteger status = -1;
+//    [self updateUi:status];
 }
 
 - (void)gameEnds
@@ -441,16 +446,6 @@
                     forControlEvents:UIControlEventTouchUpInside];
         [self matchOpponent];
     }
-}
-
-- (void)winScore
-{
-    
-}
-
-- (void)looseScore
-{
-    
 }
 
 - (void)bounceAnimation:(UIView *)object
