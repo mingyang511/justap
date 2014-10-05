@@ -92,6 +92,7 @@
                                    selector:@selector(startGuide)
                                    userInfo:nil
                                     repeats:NO];
+    self.timer = NULL;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -379,16 +380,16 @@
 
 - (void)statusChangeListener:(NSInteger)newStatus
 {
-    if (self.timer == NULL) {
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:0.3
-                                                      target:self
-                                                    selector:@selector(timeTick)
-                                                    userInfo:nil
-                                                     repeats:YES];
-    }
     self.currentStatus = newStatus;
     NSLog(@"%d", self.currentStatus);
     if (newStatus != 0) {
+        if (self.timer == NULL) {
+            self.timer = [NSTimer scheduledTimerWithTimeInterval:0.3
+                                                          target:self
+                                                        selector:@selector(timeTick)
+                                                        userInfo:nil
+                                                         repeats:YES];
+        }
         if (newStatus == self.goodBit) {
             [self updateUiToGood];
         } else {
