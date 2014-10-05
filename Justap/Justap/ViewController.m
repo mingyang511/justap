@@ -19,12 +19,15 @@
 
 #import <Firebase/Firebase.h>
 #import <POP/POP.h>
+#import <FacebookSDK/FacebookSDK.h>
 
-@interface ViewController () <FUIAlertViewDelegate>
+@interface ViewController () <FUIAlertViewDelegate, FBLoginViewDelegate>
 @property (weak, nonatomic) IBOutlet FUIButton *tapButton;
 @property (weak, nonatomic) IBOutlet RQShineLabel *shineLabel;
 
 @property (weak, nonatomic) IBOutlet FUIButton *startButton;
+@property (weak, nonatomic) IBOutlet FUIButton *challengeButton;
+
 @property (weak, nonatomic) IBOutlet UILabel *startLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
@@ -35,6 +38,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *matchedLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *countdownLabel;
+@property (weak, nonatomic) IBOutlet FUIButton *facebookLoginButton;
+@property (weak, nonatomic) IBOutlet FBLoginView *loginView;
+
 @property (assign, nonatomic) NSInteger count;
 @property (assign, nonatomic) NSInteger score;
 
@@ -109,11 +115,36 @@
     self.startButton.shadowHeight = 4.0f;
     self.startButton.cornerRadius = 5;
     self.startButton.titleLabel.font = [UIFont fontWithName:@"Avenir Next Condensed Medium" size:17];
-    [self.startButton setTitle:@"Start to tap" forState:UIControlStateNormal];
+    [self.startButton setTitle:@"Play now" forState:UIControlStateNormal];
     [self.startButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.startButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     [self.startButton addTarget:self action:@selector(startGame) forControlEvents:UIControlEventTouchUpInside];
     self.startButton.hidden = YES;
+    
+    self.challengeButton.buttonColor = [UIColor turquoiseColor];
+    self.challengeButton.shadowColor = [UIColor greenSeaColor];
+    self.challengeButton.shadowHeight = 4.0f;
+    self.challengeButton.cornerRadius = 5;
+    self.challengeButton.titleLabel.font = [UIFont fontWithName:@"Avenir Next Condensed Medium" size:17];
+    [self.challengeButton setTitle:@"Challenge a friend" forState:UIControlStateNormal];
+    [self.challengeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.startButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    [self.challengeButton addTarget:self action:@selector(showChallenge) forControlEvents:UIControlEventTouchUpInside];
+    self.challengeButton.hidden = YES;
+    
+    self.facebookLoginButton.buttonColor = [UIColor colorFromHexCode:@"6495ED"];
+    self.facebookLoginButton.shadowColor = [UIColor colorFromHexCode:@"4169E1"];
+    self.facebookLoginButton.shadowHeight = 4.0f;
+    self.facebookLoginButton.cornerRadius = 5;
+    self.facebookLoginButton.titleLabel.font = [UIFont fontWithName:@"Avenir Next Condensed Medium" size:17];
+    [self.facebookLoginButton setTitle:@"Login with Facebook" forState:UIControlStateNormal];
+    [self.facebookLoginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.facebookLoginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    [self.facebookLoginButton addTarget:self action:@selector(facebookLoginTapped) forControlEvents:UIControlEventTouchUpInside];
+    self.facebookLoginButton.hidden = YES;
+
+    self.loginView.hidden = YES;
+    self.loginView.readPermissions = @[@"public_profile", @"email", @"user_friends"];
     
     self.countdownLabel.hidden = YES;
     self.countdownLabel.layer.cornerRadius = 30;
@@ -134,22 +165,29 @@
 
 - (void)startGuide
 {
-//    self.startLabel.hidden = NO;
     self.startButton.hidden = NO;
+    self.challengeButton.hidden = NO;
 
     CGRect startButtonFrame = self.startButton.frame;
     self.startButton.frame =
     CGRectMake(startButtonFrame.origin.x + startButtonFrame.size.width/2,
                startButtonFrame.origin.y + startButtonFrame.size.height/2 , 0, 0);
-    
-//    CGRect startLabelFrame = self.startLabel.frame;
-//    self.startLabel.frame =
-//    CGRectMake(startLabelFrame.origin.x + startLabelFrame.size.width/2,
-//               startLabelFrame.origin.y + startLabelFrame.size.height/2 , 0, 0);
+   
+    CGRect challengeButtonFrame = self.challengeButton.frame;
+    self.challengeButton.frame =
+    CGRectMake(challengeButtonFrame.origin.x + challengeButtonFrame.size.width/2,
+               challengeButtonFrame.origin.y + challengeButtonFrame.size.height/2 , 0, 0);
     
     [self bounceAnimation:self.startButton
                      from:self.startButton.frame
                        to:startButtonFrame
+                    begin:0.2
+         springBounciness:10
+              springSpeed:5];
+    
+    [self bounceAnimation:self.challengeButton
+                     from:self.challengeButton.frame
+                       to:challengeButtonFrame
                     begin:0.2
          springBounciness:10
               springSpeed:5];
@@ -160,9 +198,11 @@
     //Move out
     CGRect startButtonFrame = self.startButton.frame;
     CGRect startLabelFrame = self.startLabel.frame;
+    CGRect challengeButtonFrame = self.challengeButton.frame;
     
     startButtonFrame.origin.x = -startButtonFrame.size.width*2;
     startLabelFrame.origin.x = -startLabelFrame.size.width*2;
+    challengeButtonFrame.origin.x = -startLabelFrame.size.width*2;
     
     [self moveAnimation:self.startButton
                    from:self.startButton.frame
@@ -174,6 +214,13 @@
     [self moveAnimation:self.startLabel
                    from:self.startLabel.frame
                      to:startLabelFrame
+                  begin:0.2
+       springBounciness:10
+            springSpeed:5];
+    
+    [self moveAnimation:self.challengeButton
+                   from:self.challengeButton.frame
+                     to:challengeButtonFrame
                   begin:0.2
        springBounciness:10
             springSpeed:5];
@@ -286,30 +333,6 @@
         [self updateUiToNetural];
     }
 }
-
-//- (void)matchObjectListener:(FDataSnapshot *)snap
-//{
-//    NSDictionary *value = snap.value;
-//    NSNumber *status = [value objectForKey:@"status"];
-//    if (status && status.integerValue <2 && status.integerValue > -2) {
-//        [self updateUi:status.integerValue];
-//        [self updateServer:snap];
-//    }
-//}
-//
-//- (void)updateUi:(NSInteger)bit
-//{
-//    if (bit == 0) {
-//        [self updateUiToNetural];
-//        return;
-//    }
-//    
-//    if (bit == self.goodBit) {
-//        [self updateUiToGood];
-//    } else {
-//        [self updateUiToBad];
-//    }
-//}
 
 - (void)updateServer:(FDataSnapshot *)snap
 {
@@ -501,6 +524,119 @@
     alertView.defaultButtonFont = [UIFont boldFlatFontOfSize:16];
     alertView.defaultButtonTitleColor = [UIColor asbestosColor];
     [alertView show];
+}
+
+//Challenge
+
+- (void)showChallenge
+{
+    CGRect startButtonFrame = self.startButton.frame;
+    CGRect challengeButtonFrame = self.challengeButton.frame;
+    
+    startButtonFrame.origin.x = -startButtonFrame.size.width*2;
+    challengeButtonFrame.origin.x = -challengeButtonFrame.size.width*2;
+    
+    [self moveAnimation:self.startButton
+                   from:self.startButton.frame
+                     to:startButtonFrame
+                  begin:0.2
+       springBounciness:2
+            springSpeed:4];
+    
+    [self moveAnimation:self.challengeButton
+                   from:self.challengeButton.frame
+                     to:challengeButtonFrame
+                  begin:0.2
+       springBounciness:10
+            springSpeed:5];
+    
+    
+    if (![self isFacebookLoggedIn]) {
+        [self showFacebookLogin];
+    } else {
+        CGRect startLabelFrame = self.startLabel.frame;
+        startLabelFrame.origin.x = -startLabelFrame.size.width*2;
+        [self moveAnimation:self.startLabel
+                       from:self.startLabel.frame
+                         to:startLabelFrame
+                      begin:0.2
+           springBounciness:10
+                springSpeed:5];
+        [self loadFacebookFriends];
+    }
+}
+
+- (BOOL)isFacebookLoggedIn
+{
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    NSString *session = [ud objectForKey:@"Facebook"];
+    
+    if (session && ![session isEqualToString:@""]) {
+        return YES;
+    }
+    
+    return NO;
+}
+
+- (void)showFacebookLogin
+{
+    self.loginView.hidden = NO;
+    CGRect toFrame = self.loginView.frame;
+    CGRect fromFrame = self.loginView.frame;
+    fromFrame.origin.x = 320;
+    [self moveAnimation:self.loginView
+                   from:fromFrame
+                     to:toFrame
+                  begin:0.5
+       springBounciness:5
+            springSpeed:2];
+
+}
+
+- (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView
+{
+    loginView.hidden = YES;
+    [self managedToLogin];
+}
+
+- (void)managedToLogin
+{
+    [self loadFacebookFriends];
+}
+
+- (void)failedToLogin
+{
+    
+}
+
+- (void)loadFacebookFriends
+{
+    /* make the API call */
+    [FBRequestConnection startWithGraphPath:@"/me/friends"
+                                 parameters:nil
+                                 HTTPMethod:@"GET"
+                          completionHandler:^(
+                                              FBRequestConnection *connection,
+                                              id result,
+                                              NSError *error
+                                              ) {
+                              /* handle the result */
+                              if (error) {
+                                  [self failedToLoadFacebookFriends:error];
+                              } else {
+                                  [self managedToLoadFacebookFriends:result];
+                              }
+                          }];
+}
+
+- (void)managedToLoadFacebookFriends:(id)result
+{
+    NSLog(@"%@",result);
+}
+
+- (void)failedToLoadFacebookFriends:(NSError *)error
+{
+    
 }
 
 - (void)alertView:(FUIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

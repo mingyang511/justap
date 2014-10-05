@@ -15,6 +15,7 @@
 		9B2E89D219E0D3E200BAFB3E /* AAAAChievement.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2E89CD19E0D3E200BAFB3E /* AAAAChievement.m */; };
 		9B2E89D319E0D3E200BAFB3E /* AAAAchievmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2E89CF19E0D3E200BAFB3E /* AAAAchievmentViewController.m */; };
 		9B2E89D419E0D3E200BAFB3E /* AAAAchievementManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2E89D119E0D3E200BAFB3E /* AAAAchievementManager.m */; };
+		9B2E89DA19E135F600BAFB3E /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B2E89D919E135F600BAFB3E /* FacebookSDK.framework */; };
 		9B44AD9919DFF538001CFDAE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B44AD9819DFF538001CFDAE /* main.m */; };
 		9B44AD9C19DFF538001CFDAE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B44AD9B19DFF538001CFDAE /* AppDelegate.m */; };
 		9B44AD9F19DFF538001CFDAE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B44AD9E19DFF538001CFDAE /* ViewController.m */; };
@@ -60,6 +61,7 @@
 		9B2E89CF19E0D3E200BAFB3E /* AAAAchievmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAAAchievmentViewController.m; sourceTree = "<group>"; };
 		9B2E89D019E0D3E200BAFB3E /* AAAAchievementManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAAAchievementManager.h; sourceTree = "<group>"; };
 		9B2E89D119E0D3E200BAFB3E /* AAAAchievementManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAAAchievementManager.m; sourceTree = "<group>"; };
+		9B2E89D919E135F600BAFB3E /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		9B44AD9319DFF538001CFDAE /* Justap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Justap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B44AD9719DFF538001CFDAE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9B44AD9819DFF538001CFDAE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9B2E89DA19E135F600BAFB3E /* FacebookSDK.framework in Frameworks */,
 				65D9F920B7D0432BBD49B92A /* libPods-Justap.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -268,6 +271,7 @@
 		F1E509B0C2234228A28FBB85 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9B2E89D919E135F600BAFB3E /* FacebookSDK.framework */,
 				C8118F67F8D84934860AB42E /* libPods-Justap.a */,
 			);
 			name = Frameworks;
@@ -516,6 +520,10 @@
 			baseConfigurationReference = 5CA57A4C3BC504C7B53BD7C1 /* Pods-Justap.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = Justap/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -528,6 +536,10 @@
 			baseConfigurationReference = 134DBDDA472D065C061225D3 /* Pods-Justap.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = Justap/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
