@@ -18,6 +18,7 @@
 #import "AAAGamificationManager.h"
 #import "TableViewCell.h"
 #import "TTCounterLabel.h"
+#import "YLProgressBar.h"
 
 #import <Firebase/Firebase.h>
 #import <POP/POP.h>
@@ -66,7 +67,7 @@
     [super viewDidLoad];
 
     self.opponentScore = 0;
-    self.count = 5;
+    self.count = 4;
     self.shineLabel.hidden = NO;
     self.shineLabel.numberOfLines = 0;
     self.shineLabel.text = @"Tap";
@@ -140,7 +141,7 @@
     self.startButton.shadowColor = [UIColor greenSeaColor];
     self.startButton.shadowHeight = 4.0f;
     self.startButton.cornerRadius = 5;
-    self.startButton.titleLabel.font = [UIFont fontWithName:@"Avenir Next Condensed Medium" size:17];
+    self.startButton.titleLabel.font = [UIFont fontWithName:@"Avenir Next Condensed Medium" size:23];
     [self.startButton setTitle:@"Play now" forState:UIControlStateNormal];
     [self.startButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.startButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
@@ -151,11 +152,11 @@
     self.challengeButton.shadowColor = [UIColor greenSeaColor];
     self.challengeButton.shadowHeight = 4.0f;
     self.challengeButton.cornerRadius = 5;
-    self.challengeButton.titleLabel.font = [UIFont fontWithName:@"Avenir Next Condensed Medium" size:17];
+    self.challengeButton.titleLabel.font = [UIFont fontWithName:@"Avenir Next Condensed Medium" size:23];
     [self.challengeButton setTitle:@"Challenge a friend" forState:UIControlStateNormal];
     [self.challengeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.startButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-    [self.challengeButton addTarget:self action:@selector(showChallenge) forControlEvents:UIControlEventTouchUpInside];
+//    [self.challengeButton addTarget:self action:@selector(showChallenge) forControlEvents:UIControlEventTouchUpInside];
     self.challengeButton.hidden = YES;
     
     self.inviteButton.buttonColor = [UIColor colorFromHexCode:@"6495ED"];
@@ -181,13 +182,13 @@
     self.startLabel.hidden = YES;
     
     self.matchLabel.hidden = YES;
-    self.matchLabel.text = @"Hold your horses, friendly opponent";
+    self.matchLabel.text = @"Tap to start!     ";
     
     self.matchingLabel.hidden = YES;
-    self.matchingLabel.text = @"Opponent Loading ...";
+    self.matchingLabel.text = @"Finding you a worthy opponent...";
     
     self.matchedLabel.hidden = YES;
-    self.matchedLabel.text = @"Opponent Found!";
+    self.matchedLabel.text = @"Opponent Found! Get Ready!";
 }
 
 - (void)startGuide
@@ -267,7 +268,6 @@
             springSpeed:2];
     
     //Move in
-    self.matchLabel.text = @"Hold your horses, friendly opponent";
     self.matchLabel.hidden = NO;
     
     [self.tapButton addTarget:self
@@ -284,7 +284,7 @@
             springSpeed:5];
     
     CGRect matchLabelFrame = self.matchLabel.frame;
-    matchLabelFrame.origin.x = 43;
+    matchLabelFrame.origin.x = 35;
     
     [self moveAnimation:self.matchLabel
                    from:CGRectMake(320, matchLabelFrame.origin.y, matchLabelFrame.size.width, matchLabelFrame.size.height)
@@ -309,14 +309,13 @@
     
     //Move in
     self.matchingLabel.hidden = NO;
-    self.matchingLabel.text = @"Opponent Loading ...";
     
     [self.tapButton removeTarget:self
                           action:@selector(matchOpponent)
                 forControlEvents:UIControlEventTouchUpInside];
     
     labelFrame = self.matchingLabel.frame;
-    labelFrame.origin.x = 43;
+    labelFrame.origin.x = 35;
     
     [self moveAnimation:self.matchingLabel
                    from:CGRectMake(320, labelFrame.origin.y, labelFrame.size.width, labelFrame.size.height)
@@ -347,6 +346,8 @@
             [self.scoreRef observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
                 [self updateScore:((NSNumber *)snapshot.value).integerValue];
             }];
+            
+
             Firebase *statusRef = [matchRef childByAppendingPath:@"status"];
             [statusRef observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
                 [self statusChangeListener:((NSNumber *)snapshot.value).integerValue];
@@ -358,6 +359,13 @@
                 for (NSString *key in keys) {
                     if (!([key isEqualToString:@"status"] || [key isEqualToString:self.userId])) {
                         self.oppId = key;
+                        
+                        Firebase * matchRef2 = [[myRootRef childByAppendingPath:@"matches"] childByAppendingPath:self.matchId];
+                        Firebase * opponentRef =[[matchRef2 childByAppendingPath:self.oppId] childByAppendingPath:@"score"];
+                        [opponentRef observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
+                            self.opponentScore = ((NSNumber *)snapshot.value).integerValue;
+                        }];
+                        
                     }
                 }
                 [matchRef removeAllObservers];
@@ -520,8 +528,6 @@
                                    selector:@selector(gameReady)
                                    userInfo:nil
                                     repeats:NO];
-    
-
 }
 
 - (void)gameReady
@@ -583,6 +589,11 @@
         change = -5;
     }
     [self.scoreRef setValue:[NSNumber numberWithInteger:(self.score + change)]];
+    
+    NSInteger score = (self.score < 0) ?-1.0 * self.score: self.score;
+    NSInteger opScore = (self.opponentScore < 0) ?-1.0 * self.opponentScore: self.opponentScore;
+    
+
 }
 
 - (void)countdown:(NSTimer *)timer
@@ -590,14 +601,20 @@
     if (--self.count < 0) {
         [timer invalidate];
         [self gameStarts];
-        self.count = 5;
+        self.count = 4;
         self.countdownLabel.hidden = YES;
         return;
     } else {
         self.countdownLabel.hidden = NO;
     }
-    self.countdownLabel.text =
-    [NSString stringWithFormat:@"%ld", (long)self.count];
+    
+    if (self.count > 0) {
+        self.countdownLabel.text =
+        [NSString stringWithFormat:@"%ld", (long)self.count];
+    } else {
+        self.countdownLabel.text =
+        [NSString stringWithFormat:@"Tap!"];
+    }
 }
 
 - (void)tapAction
@@ -809,6 +826,10 @@
     alertView.defaultButtonFont = [UIFont boldFlatFontOfSize:16];
     alertView.defaultButtonTitleColor = [UIColor asbestosColor];
     [alertView show];
+    
+    [self.gameCountDownLabel stop];
+    [self.timer invalidate];
+    self.timer = NULL;
 }
 
 - (void)alertView:(FUIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

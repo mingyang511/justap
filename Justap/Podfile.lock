@@ -2,15 +2,18 @@ PODS:
   - Firebase (1.2.0)
   - pop (1.0.7)
   - Underscore.m (0.2.1)
+  - YLProgressBar (3.1.1)
 
 DEPENDENCIES:
   - Firebase (>= 1.2.0)
   - pop (~> 1.0)
   - Underscore.m (~> 0.2)
+  - YLProgressBar (~> 3.1.1)
 
 SPEC CHECKSUMS:
   Firebase: efce2476ec863297327b8fb0d301d0946bdb53ec
   pop: 2f14a1ea61339767af9e66741b418c831b3844df
   Underscore.m: f99c166a9fdccfb5069085b6b4263c04b817fc9f
+  YLProgressBar: bd53df90621e5c5d2fb97fab3b1ef76efcce61b2
 
 COCOAPODS: 0.34.1
