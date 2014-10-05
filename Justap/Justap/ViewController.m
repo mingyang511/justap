@@ -120,7 +120,7 @@
     [self.gameCountDownLabel setRegularFont:[UIFont fontWithName:@"Avenir Next Condensed" size:24]];
     [self.gameCountDownLabel setFont:[UIFont fontWithName:@"Avenir Next Condensed Medium" size:15]];
     self.gameCountDownLabel.textColor = [UIColor blackColor];
-    self.gameCountDownLabel.startValue = 6000;
+    self.gameCountDownLabel.startValue = 60000;
     self.gameCountDownLabel.displayMode = kDisplayModeFull;
     self.gameCountDownLabel.countDirection = kCountDirectionDown;
     self.gameCountDownLabel.hidden = YES;
