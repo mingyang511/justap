@@ -45,6 +45,7 @@
 @property (weak, nonatomic) IBOutlet FUIButton *inviteButton;
 @property (weak, nonatomic) IBOutlet TTCounterLabel *gameCountDownLabel;
 
+@property (strong, nonatomic) NSTimer *timer;
 
 @property (strong, nonatomic) NSArray *friends;
 @property (assign, nonatomic) NSInteger count;
@@ -123,7 +124,7 @@
     self.gameCountDownLabel.countDirection = kCountDirectionDown;
     self.gameCountDownLabel.hidden = YES;
     [self.gameCountDownLabel updateApperance];
-    [self.gameCountDownLabel start];
+//    [self.gameCountDownLabel start];
     
     [self updateUiToNetural];
     self.tapButton.userInteractionEnabled = YES;
@@ -564,7 +565,7 @@
              forControlEvents:UIControlEventTouchUpInside];
     self.tapButton.hidden = NO;
     
-    [NSTimer scheduledTimerWithTimeInterval:0.3
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.3
                                      target:self
                                    selector:@selector(timeTick)
                                    userInfo:nil
@@ -614,19 +615,32 @@
 
 - (void)gameEnds
 {
+    [self.timer invalidate];
+    NSInteger diff = self.score - self.opponentScore;
+    FUIAlertView *alertView ;
     
-    FUIAlertView *alertView = [[FUIAlertView alloc] initWithTitle:@"You Win It!"
-                                                          message:@"This is an alert view"
-                                                         delegate:self
-                                                cancelButtonTitle:@"Ok"
-                                                otherButtonTitles:@"Play again", nil];
+    if (diff > 0) {//Win
+        alertView = [[FUIAlertView alloc] initWithTitle:@"You Win It!"
+                                                message:@""
+                                               delegate:self
+                                      cancelButtonTitle:@"Ok"
+                                      otherButtonTitles:@"Play again", nil];
+        alertView.alertContainer.backgroundColor = [UIColor midnightBlueColor];
+    } else {//Lost
+        alertView = [[FUIAlertView alloc] initWithTitle:@"You Lost It!"
+                                                message:@""
+                                               delegate:self
+                                      cancelButtonTitle:@"Ok"
+                                      otherButtonTitles:@"Play again", nil];
+        alertView.alertContainer.backgroundColor = [UIColor colorFromHexCode:@"DC143C"];
+    }
+    
     alertView.tag = 1;
     alertView.titleLabel.textColor = [UIColor cloudsColor];
-    alertView.titleLabel.font = [UIFont boldFlatFontOfSize:16];
+    alertView.titleLabel.font = [UIFont fontWithName:@"Avenir Next Condensed Medium" size:20];
     alertView.messageLabel.textColor = [UIColor cloudsColor];
     alertView.messageLabel.font = [UIFont flatFontOfSize:14];
     alertView.backgroundOverlay.backgroundColor = [[UIColor cloudsColor] colorWithAlphaComponent:0.8];
-    alertView.alertContainer.backgroundColor = [UIColor midnightBlueColor];
     alertView.defaultButtonColor = [UIColor cloudsColor];
     alertView.defaultButtonShadowColor = [UIColor asbestosColor];
     alertView.defaultButtonFont = [UIFont boldFlatFontOfSize:16];
@@ -637,7 +651,7 @@
 //Challenge
 - (void)countdownDidEndForSource:(TTCounterLabel *)source
 {
-    NSLog(@"ends");
+    [self gameEnds];
 }
 
 - (void)showChallenge
@@ -779,7 +793,7 @@
     alertView.messageLabel.textColor = [UIColor cloudsColor];
     alertView.messageLabel.font = [UIFont flatFontOfSize:14];
     alertView.backgroundOverlay.backgroundColor = [[UIColor cloudsColor] colorWithAlphaComponent:0.8];
-    alertView.alertContainer.backgroundColor = [UIColor midnightBlueColor];
+    alertView.alertContainer.backgroundColor = [UIColor colorFromHexCode:@"FF6347"];
     alertView.defaultButtonColor = [UIColor cloudsColor];
     alertView.defaultButtonShadowColor = [UIColor asbestosColor];
     alertView.defaultButtonFont = [UIFont boldFlatFontOfSize:16];
@@ -789,12 +803,12 @@
 
 - (void)alertView:(FUIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    self.scoreLabel.hidden = YES;
     if (alertView.tag == 1) {//End
         if (buttonIndex == 0) {
             [self.tapButton removeTarget:self
                                   action:@selector(tapButton)
                         forControlEvents:UIControlEventTouchUpInside];
+            [self prepareViews];
             [self showGame];
         } else if (buttonIndex == 1) {
             [self.tapButton removeTarget:self
@@ -807,16 +821,20 @@
             [self.tapButton removeTarget:self
                                   action:@selector(tapButton)
                         forControlEvents:UIControlEventTouchUpInside];
+            [self prepareViews];
             [self showGame];
         } else if (buttonIndex == 1) {//Resume
+            [self prepareViews];
         }
     } else if (alertView.tag == 3) {
         if (buttonIndex == 0) {//Stop
             [self.tapButton removeTarget:self
                                   action:@selector(tapButton)
                         forControlEvents:UIControlEventTouchUpInside];
+            [self prepareViews];
             [self showGame];
         } else if (buttonIndex == 1) {//Resume
+            [self prepareViews];
         }
     }
 }
@@ -886,32 +904,5 @@
     
 }
 
-- (void)updateUIForState:(NSInteger)state withSource:(TTCounterLabel *)label {
-    switch (state) {
-//        case kTTCounterRunning:
-//            [_startStopButton setTitle:NSLocalizedString(@"Stop", @"Stop") forState:UIControlStateNormal];
-//            _resetButton.hidden = YES;
-//            break;
-//            
-//        case kTTCounterStopped:
-//            [_startStopButton setTitle:NSLocalizedString(@"Resume", @"Resume") forState:UIControlStateNormal];
-//            _resetButton.hidden = NO;
-//            break;
-//            
-//        case kTTCounterReset:
-//            [_startStopButton setTitle:NSLocalizedString(@"Start", @"Start") forState:UIControlStateNormal];
-//            _resetButton.hidden = YES;
-//            _startStopButton.hidden = NO;
-//            break;
-//            
-//        case kTTCounterEnded:
-//            _startStopButton.hidden = YES;
-//            _resetButton.hidden = NO;
-//            break;
-//            
-//        default:
-//            break;
-    }
-}
 
 @end
