@@ -41,6 +41,8 @@
 @property NSString *userId;
 @property NSString *oppId;
 @property (assign) NSInteger goodBit;
+@property NSString *matchId;
+@property (assign) NSInteger currentStatus;
 @end
 
 @implementation ViewController
@@ -253,45 +255,61 @@
     Firebase *myRootRef = [[Firebase alloc] initWithUrl:@"https://shining-fire-3470.firebaseio.com/"];
     // Write data to Firebase
     Firebase *userRef = [[myRootRef childByAppendingPath:@"users"] childByAutoId];
-    [userRef setValue:@{@"id": @1}];
+    [userRef setValue:@{@"name": @"testing in progress!"}];
     
     
     // Read data and react to changes
     [userRef observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
         if (snapshot.value[@"state"] && [snapshot.value[@"state"] isEqualToString:@"match"]) {
-            NSString *matchId = [snapshot.value[@"matches"] allKeys][0];
-            Firebase *matchRef = [[myRootRef childByAppendingPath:@"matches"] childByAppendingPath:matchId];
-            [matchRef observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snap) {
-                [self matchObjectListener:snap];
+            self.matchId = [snapshot.value[@"matches"] allKeys][0];
+            self.goodBit = ((NSNumber *)(snapshot.value[@"matches"][self.matchId])).integerValue;
+            Firebase *statusRef = [[[myRootRef childByAppendingPath:@"matches"] childByAppendingPath:self.matchId] childByAppendingPath:@"status"];
+            [statusRef observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
+                [self statusChangeListener:((NSNumber *)snapshot.value).integerValue];
             }];
             [self matchedOpponent];
         }
     }];
 }
 
-- (void)matchObjectListener:(FDataSnapshot *)snap
+- (void)statusChangeListener:(NSInteger)newStatus
 {
-    NSDictionary *value = snap.value;
-    NSNumber *status = [value objectForKey:@"status"];
-    if (status && status.integerValue <2 && status.integerValue > -2) {
-        [self updateUi:status.integerValue];
-        [self updateServer:snap];
+    self.currentStatus = newStatus;
+    NSLog(@"%d", self.currentStatus);
+    if (newStatus != 0) {
+        if (newStatus == self.goodBit) {
+            [self updateUiToGood];
+        } else {
+            [self updateUiToBad];
+        }
+    } else {
+        [self updateUiToNetural];
     }
 }
 
-- (void)updateUi:(NSInteger)bit
-{
-    if (bit == 0) {
-        [self updateUiToNetural];
-        return;
-    }
-    
-    if (bit == self.goodBit) {
-        [self updateUiToGood];
-    } else {
-        [self updateUiToBad];
-    }
-}
+//- (void)matchObjectListener:(FDataSnapshot *)snap
+//{
+//    NSDictionary *value = snap.value;
+//    NSNumber *status = [value objectForKey:@"status"];
+//    if (status && status.integerValue <2 && status.integerValue > -2) {
+//        [self updateUi:status.integerValue];
+//        [self updateServer:snap];
+//    }
+//}
+//
+//- (void)updateUi:(NSInteger)bit
+//{
+//    if (bit == 0) {
+//        [self updateUiToNetural];
+//        return;
+//    }
+//    
+//    if (bit == self.goodBit) {
+//        [self updateUiToGood];
+//    } else {
+//        [self updateUiToBad];
+//    }
+//}
 
 - (void)updateServer:(FDataSnapshot *)snap
 {
@@ -452,6 +470,17 @@
 - (void)tapAction
 {
     [self updateScore:self.score - 2];
+    // Create a reference to a Firebase location
+    Firebase *myRootRef = [[Firebase alloc] initWithUrl:@"https://shining-fire-3470.firebaseio.com/"];
+    
+    Firebase *matchRef = [myRootRef childByAppendingPath:[@"matches/" stringByAppendingString:self.matchId]];
+    Firebase *statusRef = [matchRef childByAppendingPath:@"status"];
+    if (self.currentStatus == 0) {
+        self.currentStatus = self.goodBit;
+        [statusRef setValue:[NSNumber numberWithInteger:self.goodBit]];
+    } else {
+        [statusRef setValue:[NSNumber numberWithInteger:(-self.currentStatus)]];
+    }
 }
 
 - (void)gameEnds
