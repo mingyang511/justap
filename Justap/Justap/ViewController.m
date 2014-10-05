@@ -379,6 +379,13 @@
 
 - (void)statusChangeListener:(NSInteger)newStatus
 {
+    if (self.timer == NULL) {
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:0.3
+                                                      target:self
+                                                    selector:@selector(timeTick)
+                                                    userInfo:nil
+                                                     repeats:YES];
+    }
     self.currentStatus = newStatus;
     NSLog(@"%d", self.currentStatus);
     if (newStatus != 0) {
@@ -564,12 +571,6 @@
                        action:@selector(tapAction)
              forControlEvents:UIControlEventTouchUpInside];
     self.tapButton.hidden = NO;
-    
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.3
-                                     target:self
-                                   selector:@selector(timeTick)
-                                   userInfo:nil
-                                    repeats:YES];
 }
 
 - (void)timeTick
@@ -600,6 +601,13 @@
 
 - (void)tapAction
 {
+    if (self.timer == NULL) {
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:0.3
+                                                      target:self
+                                                    selector:@selector(timeTick)
+                                                    userInfo:nil
+                                                     repeats:YES];
+    }
     // Create a reference to a Firebase location
     Firebase *myRootRef = [[Firebase alloc] initWithUrl:@"https://shining-fire-3470.firebaseio.com/"];
     
