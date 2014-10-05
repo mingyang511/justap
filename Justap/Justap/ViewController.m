@@ -306,6 +306,11 @@
     [userRef setValue:@{@"name": @"testing in progress!"}];
     self.userId = userRef.name;
     
+    Firebase* statusRef = [userRef childByAppendingPath:@"state"];
+    // Write a string when this client loses connection
+    [statusRef onDisconnectSetValue:@"disconnect"];
+    
+
     // Read data and react to changes
     [userRef observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
         if (snapshot.value[@"state"] && [snapshot.value[@"state"] isEqualToString:@"match"]) {
@@ -321,9 +326,30 @@
                 [self statusChangeListener:((NSNumber *)snapshot.value).integerValue];
             }];
             
+            [matchRef observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
+                NSDictionary *val = snapshot.value;
+                NSArray *keys = [val allKeys];
+                for (NSString *key in keys) {
+                    if (!([key isEqualToString:@"status"] || [key isEqualToString:self.userId])) {
+                        self.oppId = key;
+                    }
+                }
+                [matchRef removeAllObservers];
+                [[[[myRootRef childByAppendingPath:@"users"] childByAppendingPath:self.oppId] childByAppendingPath:@"state"] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
+                    if ([snapshot.value isEqualToString:@"disconnect"]) {
+                        [self pauseGame];
+                        [[[[myRootRef childByAppendingPath:@"users"] childByAppendingPath:self.oppId] childByAppendingPath:@"state"] setValue:@"match"];
+                    } else {
+                        [self resumeGame];
+                    }
+                }];
+            }];
+            
             [self matchedOpponent];
         }
     }];
+    
+    
 }
 
 - (void)statusChangeListener:(NSInteger)newStatus
@@ -341,7 +367,12 @@
     }
 }
 
-- (void)updateServer:(FDataSnapshot *)snap
+-(void)pauseGame
+{
+    
+}
+
+-(void)resumeGame
 {
     
 }
