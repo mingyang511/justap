@@ -35,6 +35,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
 @property (weak, nonatomic) IBOutlet UILabel *scoreChangeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *score2Label;
 
 @property (weak, nonatomic) IBOutlet UILabel *matchLabel;
 @property (weak, nonatomic) IBOutlet UILabel *matchingLabel;
@@ -114,6 +115,9 @@
     self.scoreLabel.hidden = YES;
     self.scoreChangeLabel.text = @"";
     self.scoreChangeLabel.hidden = YES;
+    
+    self.score2Label.text = @"Opponent Score: 0";
+    self.score2Label.hidden = YES;
     
 //    self.gameCountDownLabel.hidden = YES;
     self.gameCountDownLabel.countdownDelegate = self;
@@ -364,6 +368,7 @@
                         Firebase * opponentRef =[[matchRef2 childByAppendingPath:self.oppId] childByAppendingPath:@"score"];
                         [opponentRef observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
                             self.opponentScore = ((NSNumber *)snapshot.value).integerValue;
+                            self.score2Label.text = [NSString stringWithFormat:@"Opponent Score: %d", self.opponentScore];
                         }];
                         
                     }
@@ -553,6 +558,7 @@
 {
     [self.gameCountDownLabel start];
     self.scoreLabel.hidden = NO;
+    self.score2Label.hidden = NO;
     self.gameCountDownLabel.hidden = NO;
     self.tapButton.userInteractionEnabled = YES;
     
@@ -561,6 +567,15 @@
                    from:CGRectMake(320, scoreLabelFrame.origin.y,
                                    scoreLabelFrame.size.width, scoreLabelFrame.size.height)
                      to:self.scoreLabel.frame
+                  begin:0
+       springBounciness:10
+            springSpeed:5];
+    
+    CGRect score2LabelFrame = self.score2Label.frame;
+    [self moveAnimation:self.score2Label
+                   from:CGRectMake(320, score2LabelFrame.origin.y,
+                                   score2LabelFrame.size.width, score2LabelFrame.size.height)
+                     to:self.score2Label.frame
                   begin:0
        springBounciness:10
             springSpeed:5];
