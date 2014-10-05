@@ -84,8 +84,7 @@
 
 - (void)prepareViews
 {
-    self.tapButton.buttonColor = [UIColor turquoiseColor];
-    self.tapButton.shadowColor = [UIColor greenSeaColor];
+    [self updateUiToNetural];
     self.tapButton.shadowHeight = 10.0f;
     self.tapButton.cornerRadius = self.tapButton.frame.size.height/2;
     self.tapButton.titleLabel.font = [UIFont boldFlatFontOfSize:16];
@@ -253,34 +252,59 @@
             NSString *matchId = [snapshot.value[@"matches"] allKeys][0];
             Firebase *matchRef = [[myRootRef childByAppendingPath:@"matches"] childByAppendingPath:matchId];
             [matchRef observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snap) {
-                NSLog(@"%@", snap.value);
+                [self matchObjectListener:snap];
             }];
-
             [self matchedOpponent];
         }
     }];
-
-//    [NSTimer scheduledTimerWithTimeInterval:4
-//                                     target:self
-//                                   selector:@selector(matchedOpponent)
-//                                   userInfo:nil
-//                                    repeats:NO];
 }
 
-- (void)updateUi
+- (void)matchObjectListener:(FDataSnapshot *)snap
+{
+    NSDictionary *value = snap.value;
+    NSNumber *status = [value objectForKey:@"status"];
+    if (status && status.integerValue <2 && status.integerValue > -2) {
+        [self updateUi:status.integerValue];
+        [self updateServer:snap];
+    }
+}
+
+- (void)updateUi:(NSInteger)bit
+{
+    if (bit == 0) {
+        [self updateUiToNetural];
+        return;
+    }
+    
+    if (bit == self.goodBit) {
+        [self updateUiToGood];
+    } else {
+        [self updateUiToBad];
+    }
+}
+
+- (void)updateServer:(FDataSnapshot *)snap
 {
     
 }
 
-- (void)updateServer
+- (void)updateUiToNetural
 {
-    
+    self.tapButton.userInteractionEnabled = NO;
+    self.tapButton.buttonColor = [UIColor colorFromHexCode:@"6495ED"];
+    self.tapButton.shadowColor = [UIColor colorFromHexCode:@"4169E1"];
 }
 
-- (void)matchObjectListener
+- (void)updateUiToGood
 {
-    [self updateUi];
-    [self updateServer];
+    self.tapButton.buttonColor = [UIColor colorFromHexCode:@"1ABC9C"];
+    self.tapButton.shadowColor = [UIColor colorFromHexCode:@"16A085"];
+}
+
+- (void)updateUiToBad
+{
+    self.tapButton.buttonColor = [UIColor colorFromHexCode:@"FF6347"];
+    self.tapButton.shadowColor = [UIColor colorFromHexCode:@"FF4500"];
 }
 
 - (void)matchedOpponent
@@ -343,6 +367,7 @@
 {
     self.scoreLabel.text = @"Score: 0";
     self.scoreLabel.hidden = NO;
+    self.tapButton.userInteractionEnabled = YES;
     
     CGRect scoreLabelFrame = self.scoreLabel.frame;
     [self moveAnimation:self.scoreLabel
@@ -351,7 +376,6 @@
                   begin:0
        springBounciness:10
             springSpeed:5];
-    
     
     [self.tapButton addTarget:self
                        action:@selector(tapAction)
@@ -376,7 +400,11 @@
 
 - (void)tapAction
 {
-    [self gameEnds];
+    //For testing
+//    [self gameEnds];
+    static NSInteger status = 1;
+    status = - status;
+    [self updateUi:status];
 }
 
 - (void)gameEnds
