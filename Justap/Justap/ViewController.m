@@ -16,12 +16,13 @@
 #import "UIFont+FlatUI.h"
 
 #import "AAAGamificationManager.h"
+#import "TableViewCell.h"
 
 #import <Firebase/Firebase.h>
 #import <POP/POP.h>
 #import <FacebookSDK/FacebookSDK.h>
 
-@interface ViewController () <FUIAlertViewDelegate, FBLoginViewDelegate>
+@interface ViewController () <FUIAlertViewDelegate, FBLoginViewDelegate, UITableViewDataSource, UITableViewDelegate, TableViewCellDelegate>
 @property (weak, nonatomic) IBOutlet FUIButton *tapButton;
 @property (weak, nonatomic) IBOutlet RQShineLabel *shineLabel;
 
@@ -38,9 +39,12 @@
 @property (weak, nonatomic) IBOutlet UILabel *matchedLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *countdownLabel;
-@property (weak, nonatomic) IBOutlet FUIButton *facebookLoginButton;
 @property (weak, nonatomic) IBOutlet FBLoginView *loginView;
+@property (weak, nonatomic) IBOutlet UITableView *friendsTableVIew;
+@property (weak, nonatomic) IBOutlet FUIButton *inviteButton;
 
+
+@property (strong, nonatomic) NSArray *friends;
 @property (assign, nonatomic) NSInteger count;
 @property (assign, nonatomic) NSInteger score;
 
@@ -66,6 +70,7 @@
     self.shineLabel.center = self.view.center;
     [self.view addSubview:self.shineLabel];
     
+    self.friends = [[NSArray alloc] init];
     [self prepareViews];
     
     CGRect frame = self.shineLabel.frame;
@@ -96,6 +101,7 @@
 
 - (void)prepareViews
 {
+    self.friendsTableVIew.hidden = YES;
     self.score = 0;
     self.scoreLabel.text = @"Score: 0";
     self.scoreLabel.hidden = YES;
@@ -133,18 +139,19 @@
     [self.challengeButton addTarget:self action:@selector(showChallenge) forControlEvents:UIControlEventTouchUpInside];
     self.challengeButton.hidden = YES;
     
-    self.facebookLoginButton.buttonColor = [UIColor colorFromHexCode:@"6495ED"];
-    self.facebookLoginButton.shadowColor = [UIColor colorFromHexCode:@"4169E1"];
-    self.facebookLoginButton.shadowHeight = 4.0f;
-    self.facebookLoginButton.cornerRadius = 5;
-    self.facebookLoginButton.titleLabel.font = [UIFont fontWithName:@"Avenir Next Condensed Medium" size:17];
-    [self.facebookLoginButton setTitle:@"Login with Facebook" forState:UIControlStateNormal];
-    [self.facebookLoginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.facebookLoginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-    [self.facebookLoginButton addTarget:self action:@selector(facebookLoginTapped) forControlEvents:UIControlEventTouchUpInside];
-    self.facebookLoginButton.hidden = YES;
+    self.inviteButton.buttonColor = [UIColor colorFromHexCode:@"6495ED"];
+    self.inviteButton.shadowColor = [UIColor colorFromHexCode:@"4169E1"];
+    self.inviteButton.shadowHeight = 4.0f;
+    self.inviteButton.cornerRadius = 5;
+    self.inviteButton.titleLabel.font = [UIFont fontWithName:@"Avenir Next Condensed Medium" size:17];
+    [self.inviteButton setTitle:@"Invite" forState:UIControlStateNormal];
+    [self.inviteButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.inviteButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    [self.inviteButton addTarget:self action:@selector(invite:) forControlEvents:UIControlEventTouchUpInside];
+    self.inviteButton.hidden = YES;
 
     self.loginView.hidden = YES;
+    self.loginView.delegate = self;
     self.loginView.readPermissions = @[@"public_profile", @"email", @"user_friends"];
     
     self.countdownLabel.hidden = YES;
@@ -536,6 +543,7 @@
                                                          delegate:self
                                                 cancelButtonTitle:@"Ok"
                                                 otherButtonTitles:@"Play again", nil];
+    alertView.tag = 1;
     alertView.titleLabel.textColor = [UIColor cloudsColor];
     alertView.titleLabel.font = [UIFont boldFlatFontOfSize:16];
     alertView.messageLabel.textColor = [UIColor cloudsColor];
@@ -577,15 +585,25 @@
     if (![self isFacebookLoggedIn]) {
         [self showFacebookLogin];
     } else {
-        CGRect startLabelFrame = self.startLabel.frame;
-        startLabelFrame.origin.x = -startLabelFrame.size.width*2;
-        [self moveAnimation:self.startLabel
-                       from:self.startLabel.frame
-                         to:startLabelFrame
-                      begin:0.2
-           springBounciness:10
-                springSpeed:5];
-        [self loadFacebookFriends];
+//        CGRect startLabelFrame = self.startLabel.frame;
+//        startLabelFrame.origin.x = -startLabelFrame.size.width*2;
+//        [self moveAnimation:self.startLabel
+//                       from:self.startLabel.frame
+//                         to:startLabelFrame
+//                      begin:0
+//           springBounciness:10
+//                springSpeed:5];
+        
+        CGRect frame = self.shineLabel.frame;
+        frame.origin.y = 60;
+        [self moveAnimation:self.shineLabel
+                       from:self.shineLabel.frame
+                         to:frame
+                      begin:0.5
+           springBounciness:5
+                springSpeed:2];
+        
+        [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(loadFacebookFriends) userInfo:nil repeats:NO];
     }
 }
 
@@ -613,13 +631,12 @@
                   begin:0.5
        springBounciness:5
             springSpeed:2];
-
 }
 
 - (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView
 {
-    loginView.hidden = YES;
-    [self managedToLogin];
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    [ud setObject:@"123" forKey:@"Facebook"];
 }
 
 - (void)managedToLogin
@@ -655,6 +672,16 @@
 - (void)managedToLoadFacebookFriends:(id)result
 {
     NSLog(@"%@",result);
+    self.friends = [result objectForKey:@"data"];
+    self.friendsTableVIew.hidden = NO;
+    [self.friendsTableVIew reloadData];
+    
+    self.inviteButton.hidden = NO;
+    self.inviteButton.frame = CGRectMake(20,
+                                         //self.friendsTableVIew.frame.origin.y + self.friends.count * 62 + 10,
+                                         self.view.frame.size.height -60,
+                                         280,
+                                         40);
 }
 
 - (void)failedToLoadFacebookFriends:(NSError *)error
@@ -662,19 +689,55 @@
     
 }
 
+- (void)invite:(id)sender
+{
+    
+}
+
+- (void)showPause
+{
+    FUIAlertView *alertView = [[FUIAlertView alloc] initWithTitle:@"Resume"
+                                                          message:@"This is an alert view"
+                                                         delegate:self
+                                                cancelButtonTitle:@"Stop"
+                                                otherButtonTitles:@"Continue", nil];
+    alertView.tag = 2;
+    alertView.titleLabel.textColor = [UIColor cloudsColor];
+    alertView.titleLabel.font = [UIFont boldFlatFontOfSize:16];
+    alertView.messageLabel.textColor = [UIColor cloudsColor];
+    alertView.messageLabel.font = [UIFont flatFontOfSize:14];
+    alertView.backgroundOverlay.backgroundColor = [[UIColor cloudsColor] colorWithAlphaComponent:0.8];
+    alertView.alertContainer.backgroundColor = [UIColor midnightBlueColor];
+    alertView.defaultButtonColor = [UIColor cloudsColor];
+    alertView.defaultButtonShadowColor = [UIColor asbestosColor];
+    alertView.defaultButtonFont = [UIFont boldFlatFontOfSize:16];
+    alertView.defaultButtonTitleColor = [UIColor asbestosColor];
+    [alertView show];
+}
+
 - (void)alertView:(FUIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     self.scoreLabel.hidden = YES;
-    if (buttonIndex == 0) {
-        [self.tapButton removeTarget:self
-                              action:@selector(tapButton)
-                    forControlEvents:UIControlEventTouchUpInside];
-        [self showGame];
-    } else if (buttonIndex == 1) {
-        [self.tapButton removeTarget:self
-                              action:@selector(tapButton)
-                    forControlEvents:UIControlEventTouchUpInside];
-        [self matchOpponent];
+    if (alertView.tag == 1) {//End
+        if (buttonIndex == 0) {
+            [self.tapButton removeTarget:self
+                                  action:@selector(tapButton)
+                        forControlEvents:UIControlEventTouchUpInside];
+            [self showGame];
+        } else if (buttonIndex == 1) {
+            [self.tapButton removeTarget:self
+                                  action:@selector(tapButton)
+                        forControlEvents:UIControlEventTouchUpInside];
+            [self matchOpponent];
+        }
+    } else if (alertView.tag == 2) {
+        if (buttonIndex == 0) {//Stop
+            [self.tapButton removeTarget:self
+                                  action:@selector(tapButton)
+                        forControlEvents:UIControlEventTouchUpInside];
+            [self showGame];
+        } else if (buttonIndex == 1) {//Resume
+        }
     }
 }
 
@@ -710,5 +773,37 @@
     [object.layer pop_addAnimation:buttonBounceAnimation forKey:@"moveAnimation"];
 }
 
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [self.friends count];
+}
+
+- (TableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"TableViewCell";
+    
+    TableViewCell *cell = (TableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[TableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] ;
+    }
+    
+    NSDictionary *dic = [self.friends objectAtIndex:indexPath.row];
+    cell.delegate = self;
+    cell.name.text =[dic objectForKey:@"name"];
+    [cell getImageWithId:[dic objectForKey:@"id"]];
+    
+    return cell;
+}
+
+- (void)cellTapped:(TableViewCell *)cell
+{
+    
+}
 
 @end

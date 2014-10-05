@@ -16,6 +16,8 @@
 		9B2E89D319E0D3E200BAFB3E /* AAAAchievmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2E89CF19E0D3E200BAFB3E /* AAAAchievmentViewController.m */; };
 		9B2E89D419E0D3E200BAFB3E /* AAAAchievementManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2E89D119E0D3E200BAFB3E /* AAAAchievementManager.m */; };
 		9B2E89DA19E135F600BAFB3E /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B2E89D919E135F600BAFB3E /* FacebookSDK.framework */; };
+		9B2E89DD19E14A3E00BAFB3E /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2E89DC19E14A3E00BAFB3E /* TableViewController.m */; };
+		9B2E89E019E14AFD00BAFB3E /* TableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2E89DF19E14AFD00BAFB3E /* TableViewCell.m */; };
 		9B44AD9919DFF538001CFDAE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B44AD9819DFF538001CFDAE /* main.m */; };
 		9B44AD9C19DFF538001CFDAE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B44AD9B19DFF538001CFDAE /* AppDelegate.m */; };
 		9B44AD9F19DFF538001CFDAE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B44AD9E19DFF538001CFDAE /* ViewController.m */; };
@@ -62,6 +64,10 @@
 		9B2E89D019E0D3E200BAFB3E /* AAAAchievementManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAAAchievementManager.h; sourceTree = "<group>"; };
 		9B2E89D119E0D3E200BAFB3E /* AAAAchievementManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAAAchievementManager.m; sourceTree = "<group>"; };
 		9B2E89D919E135F600BAFB3E /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
+		9B2E89DB19E14A3E00BAFB3E /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
+		9B2E89DC19E14A3E00BAFB3E /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
+		9B2E89DE19E14AFD00BAFB3E /* TableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewCell.h; sourceTree = "<group>"; };
+		9B2E89DF19E14AFD00BAFB3E /* TableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewCell.m; sourceTree = "<group>"; };
 		9B44AD9319DFF538001CFDAE /* Justap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Justap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B44AD9719DFF538001CFDAE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9B44AD9819DFF538001CFDAE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -184,6 +190,10 @@
 				9B44AD9B19DFF538001CFDAE /* AppDelegate.m */,
 				9B44AD9D19DFF538001CFDAE /* ViewController.h */,
 				9B44AD9E19DFF538001CFDAE /* ViewController.m */,
+				9B2E89DB19E14A3E00BAFB3E /* TableViewController.h */,
+				9B2E89DC19E14A3E00BAFB3E /* TableViewController.m */,
+				9B2E89DE19E14AFD00BAFB3E /* TableViewCell.h */,
+				9B2E89DF19E14AFD00BAFB3E /* TableViewCell.m */,
 				9B44ADA019DFF538001CFDAE /* Main.storyboard */,
 				9B2E89A719E0D07B00BAFB3E /* ScoreLabel */,
 				9B44ADBF19DFF947001CFDAE /* ShineLabel */,
@@ -389,11 +399,13 @@
 				9BD5B9F419E001DE002CFA2C /* UIPopoverController+FlatUI.m in Sources */,
 				9BD5B9F819E001DE002CFA2C /* UITabBar+FlatUI.m in Sources */,
 				9BD5B9F519E001DE002CFA2C /* UIProgressView+FlatUI.m in Sources */,
+				9B2E89DD19E14A3E00BAFB3E /* TableViewController.m in Sources */,
 				9BD5B9F119E001DE002CFA2C /* UIFont+FlatUI.m in Sources */,
 				9BD5B9E819E001DE002CFA2C /* FUIAlertView.m in Sources */,
 				9B44AD9F19DFF538001CFDAE /* ViewController.m in Sources */,
 				9BD5B9F019E001DE002CFA2C /* UIColor+FlatUI.m in Sources */,
 				9BD5B9EE19E001DE002CFA2C /* FUITextField.m in Sources */,
+				9B2E89E019E14AFD00BAFB3E /* TableViewCell.m in Sources */,
 				9BD5B9FA19E001DE002CFA2C /* UIToolbar+FlatUI.m in Sources */,
 				9BD5B9F319E001DE002CFA2C /* UINavigationBar+FlatUI.m in Sources */,
 				9BD5B9E919E001DE002CFA2C /* FUIButton.m in Sources */,
