@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		65D9F920B7D0432BBD49B92A /* libPods-Justap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C8118F67F8D84934860AB42E /* libPods-Justap.a */; };
+		9B2E89C819E0D3CB00BAFB3E /* AAAScoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2E89C119E0D3CB00BAFB3E /* AAAScoreViewController.m */; };
+		9B2E89C919E0D3CB00BAFB3E /* AAAScoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2E89C319E0D3CB00BAFB3E /* AAAScoreView.m */; };
+		9B2E89CA19E0D3CB00BAFB3E /* AAAMainPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2E89C519E0D3CB00BAFB3E /* AAAMainPlayer.m */; };
+		9B2E89CB19E0D3CB00BAFB3E /* AAAGamificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2E89C719E0D3CB00BAFB3E /* AAAGamificationManager.m */; };
+		9B2E89D219E0D3E200BAFB3E /* AAAAChievement.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2E89CD19E0D3E200BAFB3E /* AAAAChievement.m */; };
+		9B2E89D319E0D3E200BAFB3E /* AAAAchievmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2E89CF19E0D3E200BAFB3E /* AAAAchievmentViewController.m */; };
+		9B2E89D419E0D3E200BAFB3E /* AAAAchievementManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2E89D119E0D3E200BAFB3E /* AAAAchievementManager.m */; };
 		9B44AD9919DFF538001CFDAE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B44AD9819DFF538001CFDAE /* main.m */; };
 		9B44AD9C19DFF538001CFDAE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B44AD9B19DFF538001CFDAE /* AppDelegate.m */; };
 		9B44AD9F19DFF538001CFDAE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B44AD9E19DFF538001CFDAE /* ViewController.m */; };
@@ -39,6 +46,20 @@
 /* Begin PBXFileReference section */
 		134DBDDA472D065C061225D3 /* Pods-Justap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Justap.release.xcconfig"; path = "Pods/Target Support Files/Pods-Justap/Pods-Justap.release.xcconfig"; sourceTree = "<group>"; };
 		5CA57A4C3BC504C7B53BD7C1 /* Pods-Justap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Justap.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Justap/Pods-Justap.debug.xcconfig"; sourceTree = "<group>"; };
+		9B2E89C019E0D3CB00BAFB3E /* AAAScoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAAScoreViewController.h; sourceTree = "<group>"; };
+		9B2E89C119E0D3CB00BAFB3E /* AAAScoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAAScoreViewController.m; sourceTree = "<group>"; };
+		9B2E89C219E0D3CB00BAFB3E /* AAAScoreView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAAScoreView.h; sourceTree = "<group>"; };
+		9B2E89C319E0D3CB00BAFB3E /* AAAScoreView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAAScoreView.m; sourceTree = "<group>"; };
+		9B2E89C419E0D3CB00BAFB3E /* AAAMainPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAAMainPlayer.h; sourceTree = "<group>"; };
+		9B2E89C519E0D3CB00BAFB3E /* AAAMainPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAAMainPlayer.m; sourceTree = "<group>"; };
+		9B2E89C619E0D3CB00BAFB3E /* AAAGamificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAAGamificationManager.h; sourceTree = "<group>"; };
+		9B2E89C719E0D3CB00BAFB3E /* AAAGamificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAAGamificationManager.m; sourceTree = "<group>"; };
+		9B2E89CC19E0D3E200BAFB3E /* AAAAChievement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAAAChievement.h; sourceTree = "<group>"; };
+		9B2E89CD19E0D3E200BAFB3E /* AAAAChievement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAAAChievement.m; sourceTree = "<group>"; };
+		9B2E89CE19E0D3E200BAFB3E /* AAAAchievmentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAAAchievmentViewController.h; sourceTree = "<group>"; };
+		9B2E89CF19E0D3E200BAFB3E /* AAAAchievmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAAAchievmentViewController.m; sourceTree = "<group>"; };
+		9B2E89D019E0D3E200BAFB3E /* AAAAchievementManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAAAchievementManager.h; sourceTree = "<group>"; };
+		9B2E89D119E0D3E200BAFB3E /* AAAAchievementManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAAAchievementManager.m; sourceTree = "<group>"; };
 		9B44AD9319DFF538001CFDAE /* Justap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Justap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B44AD9719DFF538001CFDAE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9B44AD9819DFF538001CFDAE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -114,6 +135,27 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		9B2E89A719E0D07B00BAFB3E /* ScoreLabel */ = {
+			isa = PBXGroup;
+			children = (
+				9B2E89C019E0D3CB00BAFB3E /* AAAScoreViewController.h */,
+				9B2E89C119E0D3CB00BAFB3E /* AAAScoreViewController.m */,
+				9B2E89C219E0D3CB00BAFB3E /* AAAScoreView.h */,
+				9B2E89C319E0D3CB00BAFB3E /* AAAScoreView.m */,
+				9B2E89C419E0D3CB00BAFB3E /* AAAMainPlayer.h */,
+				9B2E89C519E0D3CB00BAFB3E /* AAAMainPlayer.m */,
+				9B2E89C619E0D3CB00BAFB3E /* AAAGamificationManager.h */,
+				9B2E89C719E0D3CB00BAFB3E /* AAAGamificationManager.m */,
+				9B2E89CC19E0D3E200BAFB3E /* AAAAChievement.h */,
+				9B2E89CD19E0D3E200BAFB3E /* AAAAChievement.m */,
+				9B2E89CE19E0D3E200BAFB3E /* AAAAchievmentViewController.h */,
+				9B2E89CF19E0D3E200BAFB3E /* AAAAchievmentViewController.m */,
+				9B2E89D019E0D3E200BAFB3E /* AAAAchievementManager.h */,
+				9B2E89D119E0D3E200BAFB3E /* AAAAchievementManager.m */,
+			);
+			name = ScoreLabel;
+			sourceTree = "<group>";
+		};
 		9B44AD8A19DFF538001CFDAE = {
 			isa = PBXGroup;
 			children = (
@@ -140,8 +182,9 @@
 				9B44AD9D19DFF538001CFDAE /* ViewController.h */,
 				9B44AD9E19DFF538001CFDAE /* ViewController.m */,
 				9B44ADA019DFF538001CFDAE /* Main.storyboard */,
-				9BD5B9BF19E001DE002CFA2C /* Button */,
+				9B2E89A719E0D07B00BAFB3E /* ScoreLabel */,
 				9B44ADBF19DFF947001CFDAE /* ShineLabel */,
+				9BD5B9BF19E001DE002CFA2C /* Button */,
 				9B44ADA319DFF538001CFDAE /* Images.xcassets */,
 				9B44ADA519DFF538001CFDAE /* LaunchScreen.xib */,
 				9B44AD9619DFF538001CFDAE /* Supporting Files */,
@@ -335,7 +378,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9B2E89D319E0D3E200BAFB3E /* AAAAchievmentViewController.m in Sources */,
 				9BD5B9ED19E001DE002CFA2C /* FUISwitch.m in Sources */,
+				9B2E89CB19E0D3CB00BAFB3E /* AAAGamificationManager.m in Sources */,
+				9B2E89C919E0D3CB00BAFB3E /* AAAScoreView.m in Sources */,
 				9BD5B9F419E001DE002CFA2C /* UIPopoverController+FlatUI.m in Sources */,
 				9BD5B9F819E001DE002CFA2C /* UITabBar+FlatUI.m in Sources */,
 				9BD5B9F519E001DE002CFA2C /* UIProgressView+FlatUI.m in Sources */,
@@ -348,16 +394,20 @@
 				9BD5B9F319E001DE002CFA2C /* UINavigationBar+FlatUI.m in Sources */,
 				9BD5B9E919E001DE002CFA2C /* FUIButton.m in Sources */,
 				9BD5B9F619E001DE002CFA2C /* UISlider+FlatUI.m in Sources */,
+				9B2E89D219E0D3E200BAFB3E /* AAAAChievement.m in Sources */,
 				9BD5B9F919E001DE002CFA2C /* UITableViewCell+FlatUI.m in Sources */,
 				9BD5B9EF19E001DE002CFA2C /* UIBarButtonItem+FlatUI.m in Sources */,
 				9BD5B9EA19E001DE002CFA2C /* FUICellBackgroundView.m in Sources */,
 				9B44AD9C19DFF538001CFDAE /* AppDelegate.m in Sources */,
+				9B2E89C819E0D3CB00BAFB3E /* AAAScoreViewController.m in Sources */,
 				9BD5B9F719E001DE002CFA2C /* UIStepper+FlatUI.m in Sources */,
+				9B2E89D419E0D3E200BAFB3E /* AAAAchievementManager.m in Sources */,
 				9B44AD9919DFF538001CFDAE /* main.m in Sources */,
 				9BD5B9EC19E001DE002CFA2C /* FUISegmentedControl.m in Sources */,
 				9BD5B9F219E001DE002CFA2C /* UIImage+FlatUI.m in Sources */,
 				9B44ADBE19DFF943001CFDAE /* RQShineLabel.m in Sources */,
 				9BD5B9EB19E001DE002CFA2C /* FUIPopoverBackgroundView.m in Sources */,
+				9B2E89CA19E0D3CB00BAFB3E /* AAAMainPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

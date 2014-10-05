@@ -15,6 +15,8 @@
 #import "UIColor+FlatUI.h"
 #import "UIFont+FlatUI.h"
 
+#import "AAAGamificationManager.h"
+
 #import <Firebase/Firebase.h>
 #import <POP/POP.h>
 
@@ -26,6 +28,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *startLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
+@property (weak, nonatomic) IBOutlet UILabel *scoreChangeLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *matchLabel;
 @property (weak, nonatomic) IBOutlet UILabel *matchingLabel;
@@ -33,6 +36,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *countdownLabel;
 @property (assign, nonatomic) NSInteger count;
+@property (assign, nonatomic) NSInteger score;
 
 @property NSString *userId;
 @property NSString *oppId;
@@ -81,9 +85,14 @@
     [super didReceiveMemoryWarning];
 }
 
-
 - (void)prepareViews
 {
+    self.score = 0;
+    self.scoreLabel.text = @"Score: 0";
+    self.scoreLabel.hidden = YES;
+    self.scoreChangeLabel.text = @"";
+    self.scoreChangeLabel.hidden = YES;
+    
     [self updateUiToNetural];
     self.tapButton.userInteractionEnabled = YES;
     self.tapButton.shadowHeight = 10.0f;
@@ -310,7 +319,44 @@
 
 - (void)updateScore:(NSInteger)score
 {
+    NSInteger difference = score - self.score;
+    self.score = score;
+    self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", self.score];
+    self.scoreChangeLabel.alpha = 1;
+    self.scoreChangeLabel.hidden = NO;
     
+    if (difference > 0) {
+        self.scoreChangeLabel.text = [@"+" stringByAppendingFormat:@"%d", difference];
+        self.scoreChangeLabel.textColor =[UIColor colorFromHexCode:@"1ABC9C"];
+        
+        CGRect frame = self.scoreLabel.frame;
+        frame.origin.y -= 20;
+        [self moveAnimation:self.scoreChangeLabel
+                       from:self.scoreLabel.frame
+                         to:frame
+                      begin:0
+           springBounciness:0
+                springSpeed:1];
+    } else if (difference < 0) {
+        self.scoreChangeLabel.text = [@"" stringByAppendingFormat:@"%d", difference];
+        self.scoreChangeLabel.textColor =[UIColor colorFromHexCode:@"FF6347"];
+        
+        CGRect frame = self.scoreLabel.frame;
+        frame.origin.y += 20;
+        [self moveAnimation:self.scoreChangeLabel
+                       from:self.scoreLabel.frame
+                         to:frame
+                      begin:0
+           springBounciness:0
+                springSpeed:1];
+    }
+    
+    POPBasicAnimation *anim = [POPBasicAnimation animationWithPropertyNamed:kPOPViewAlpha];
+    anim.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    anim.beginTime = CACurrentMediaTime() + 0.5;
+    anim.fromValue = @(1.0);
+    anim.toValue = @(0.0);
+    [self.scoreChangeLabel pop_addAnimation:anim forKey:@"fade"];
 }
 
 - (void)matchedOpponent
@@ -371,7 +417,6 @@
 
 - (void)gameStarts
 {
-    self.scoreLabel.text = @"Score: 0";
     self.scoreLabel.hidden = NO;
     self.tapButton.userInteractionEnabled = YES;
     
@@ -406,10 +451,7 @@
 
 - (void)tapAction
 {
-    //For testing
-    [self gameEnds];
-//    static NSInteger status = -1;
-//    [self updateUi:status];
+    [self updateScore:self.score - 2];
 }
 
 - (void)gameEnds
