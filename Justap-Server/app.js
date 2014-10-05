@@ -36,9 +36,11 @@
     o = {};
     o['status'] = 0;
     o[matchedVals[0]] = {
+      status: -1,
       score: 0
     };
     o[matchedVals[1]] = {
+      status: 1,
       score: 0
     };
     match = (myF.child('matches').push(o)).name();
