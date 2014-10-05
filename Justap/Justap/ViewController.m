@@ -814,6 +814,8 @@
             [self.tapButton removeTarget:self
                                   action:@selector(tapButton)
                         forControlEvents:UIControlEventTouchUpInside];
+            [self prepareViews];
+            self.tapButton.hidden = NO;
             [self matchOpponent];
         }
     } else if (alertView.tag == 2) {
