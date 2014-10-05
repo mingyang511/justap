@@ -49,6 +49,7 @@
 @property (assign) NSInteger goodBit;
 @property NSString *matchId;
 @property (assign) NSInteger currentStatus;
+@property Firebase *scoreRef;
 @end
 
 @implementation ViewController
@@ -303,17 +304,23 @@
     // Write data to Firebase
     Firebase *userRef = [[myRootRef childByAppendingPath:@"users"] childByAutoId];
     [userRef setValue:@{@"name": @"testing in progress!"}];
-    
+    self.userId = userRef.name;
     
     // Read data and react to changes
     [userRef observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
         if (snapshot.value[@"state"] && [snapshot.value[@"state"] isEqualToString:@"match"]) {
             self.matchId = [snapshot.value[@"matches"] allKeys][0];
             self.goodBit = ((NSNumber *)(snapshot.value[@"matches"][self.matchId])).integerValue;
-            Firebase *statusRef = [[[myRootRef childByAppendingPath:@"matches"] childByAppendingPath:self.matchId] childByAppendingPath:@"status"];
+            Firebase * matchRef = [[myRootRef childByAppendingPath:@"matches"] childByAppendingPath:self.matchId];
+            self.scoreRef = [[matchRef childByAppendingPath:self.userId] childByAppendingPath:@"score"];
+            [self.scoreRef observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
+                [self updateScore:((NSNumber *)snapshot.value).integerValue];
+            }];
+            Firebase *statusRef = [matchRef childByAppendingPath:@"status"];
             [statusRef observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
                 [self statusChangeListener:((NSNumber *)snapshot.value).integerValue];
             }];
+            
             [self matchedOpponent];
         }
     }];
@@ -377,7 +384,7 @@
                          to:frame
                       begin:0
            springBounciness:0
-                springSpeed:1];
+                springSpeed:2];
     } else if (difference < 0) {
         self.scoreChangeLabel.text = [@"" stringByAppendingFormat:@"%d", difference];
         self.scoreChangeLabel.textColor =[UIColor colorFromHexCode:@"FF6347"];
@@ -389,7 +396,7 @@
                          to:frame
                       begin:0
            springBounciness:0
-                springSpeed:1];
+                springSpeed:2];
     }
     
     POPBasicAnimation *anim = [POPBasicAnimation animationWithPropertyNamed:kPOPViewAlpha];
@@ -473,6 +480,23 @@
                        action:@selector(tapAction)
              forControlEvents:UIControlEventTouchUpInside];
     self.tapButton.hidden = NO;
+    
+    [NSTimer scheduledTimerWithTimeInterval:0.3
+                                     target:self
+                                   selector:@selector(timeTick)
+                                   userInfo:nil
+                                    repeats:YES];
+}
+
+- (void)timeTick
+{
+    NSInteger change = 0;
+    if (self.currentStatus == self.goodBit) {
+        change = 5;
+    } else {
+        change = -5;
+    }
+    [self.scoreRef setValue:[NSNumber numberWithInteger:(self.score + change)]];
 }
 
 - (void)countdown:(NSTimer *)timer
@@ -492,7 +516,6 @@
 
 - (void)tapAction
 {
-    [self updateScore:self.score - 2];
     // Create a reference to a Firebase location
     Firebase *myRootRef = [[Firebase alloc] initWithUrl:@"https://shining-fire-3470.firebaseio.com/"];
     
