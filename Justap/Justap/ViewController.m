@@ -49,6 +49,7 @@
 @property (strong, nonatomic) NSArray *friends;
 @property (assign, nonatomic) NSInteger count;
 @property (assign, nonatomic) NSInteger score;
+@property (assign, nonatomic) NSInteger opponentScore;
 
 @property NSString *userId;
 @property NSString *oppId;
@@ -63,6 +64,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.opponentScore = 0;
     self.count = 5;
     self.shineLabel.hidden = NO;
     self.shineLabel.numberOfLines = 0;
@@ -116,11 +118,12 @@
     [self.gameCountDownLabel setRegularFont:[UIFont fontWithName:@"Avenir Next Condensed" size:24]];
     [self.gameCountDownLabel setFont:[UIFont fontWithName:@"Avenir Next Condensed Medium" size:15]];
     self.gameCountDownLabel.textColor = [UIColor blackColor];
-    self.gameCountDownLabel.startValue = 60000;
+    self.gameCountDownLabel.startValue = 6000;
     self.gameCountDownLabel.displayMode = kDisplayModeFull;
     self.gameCountDownLabel.countDirection = kCountDirectionDown;
     self.gameCountDownLabel.hidden = YES;
     [self.gameCountDownLabel updateApperance];
+    [self.gameCountDownLabel start];
     
     [self updateUiToNetural];
     self.tapButton.userInteractionEnabled = YES;
@@ -390,7 +393,23 @@
 
 -(void)pauseGame
 {
-    
+    FUIAlertView *alertView = [[FUIAlertView alloc] initWithTitle:@"Your opponent is lost."
+                                                          message:@""
+                                                         delegate:self
+                                                cancelButtonTitle:@"Close"
+                                                otherButtonTitles:@"Play again", nil];
+    alertView.tag = 3;
+    alertView.titleLabel.textColor = [UIColor cloudsColor];
+    alertView.titleLabel.font = [UIFont boldFlatFontOfSize:16];
+    alertView.messageLabel.textColor = [UIColor cloudsColor];
+    alertView.messageLabel.font = [UIFont flatFontOfSize:14];
+    alertView.backgroundOverlay.backgroundColor = [[UIColor cloudsColor] colorWithAlphaComponent:0.8];
+    alertView.alertContainer.backgroundColor = [UIColor midnightBlueColor];
+    alertView.defaultButtonColor = [UIColor cloudsColor];
+    alertView.defaultButtonShadowColor = [UIColor asbestosColor];
+    alertView.defaultButtonFont = [UIFont boldFlatFontOfSize:16];
+    alertView.defaultButtonTitleColor = [UIColor asbestosColor];
+    [alertView show];
 }
 
 -(void)resumeGame
@@ -595,6 +614,7 @@
 
 - (void)gameEnds
 {
+    
     FUIAlertView *alertView = [[FUIAlertView alloc] initWithTitle:@"You Win It!"
                                                           message:@"This is an alert view"
                                                          delegate:self
@@ -646,15 +666,6 @@
     if (![self isFacebookLoggedIn]) {
         [self showFacebookLogin];
     } else {
-//        CGRect startLabelFrame = self.startLabel.frame;
-//        startLabelFrame.origin.x = -startLabelFrame.size.width*2;
-//        [self moveAnimation:self.startLabel
-//                       from:self.startLabel.frame
-//                         to:startLabelFrame
-//                      begin:0
-//           springBounciness:10
-//                springSpeed:5];
-        
         CGRect frame = self.shineLabel.frame;
         frame.origin.y = 60;
         [self moveAnimation:self.shineLabel
@@ -792,6 +803,14 @@
             [self matchOpponent];
         }
     } else if (alertView.tag == 2) {
+        if (buttonIndex == 0) {//Stop
+            [self.tapButton removeTarget:self
+                                  action:@selector(tapButton)
+                        forControlEvents:UIControlEventTouchUpInside];
+            [self showGame];
+        } else if (buttonIndex == 1) {//Resume
+        }
+    } else if (alertView.tag == 3) {
         if (buttonIndex == 0) {//Stop
             [self.tapButton removeTarget:self
                                   action:@selector(tapButton)
