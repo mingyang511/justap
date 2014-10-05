@@ -25,6 +25,8 @@
 		9B44ADA419DFF538001CFDAE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B44ADA319DFF538001CFDAE /* Images.xcassets */; };
 		9B44ADA719DFF538001CFDAE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9B44ADA519DFF538001CFDAE /* LaunchScreen.xib */; };
 		9B44ADBE19DFF943001CFDAE /* RQShineLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B44ADBD19DFF943001CFDAE /* RQShineLabel.m */; };
+		9BA7FA6519E1A1B700ACE492 /* TTCounterLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA7FA6419E1A1B700ACE492 /* TTCounterLabel.m */; };
+		9BA7FA6819E1A2C000ACE492 /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA7FA6719E1A2C000ACE492 /* TTTAttributedLabel.m */; };
 		9BD5B9E819E001DE002CFA2C /* FUIAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BD5B9C319E001DE002CFA2C /* FUIAlertView.m */; };
 		9BD5B9E919E001DE002CFA2C /* FUIButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BD5B9C519E001DE002CFA2C /* FUIButton.m */; };
 		9BD5B9EA19E001DE002CFA2C /* FUICellBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BD5B9C719E001DE002CFA2C /* FUICellBackgroundView.m */; };
@@ -80,6 +82,10 @@
 		9B44ADA619DFF538001CFDAE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		9B44ADBC19DFF943001CFDAE /* RQShineLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RQShineLabel.h; sourceTree = "<group>"; };
 		9B44ADBD19DFF943001CFDAE /* RQShineLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RQShineLabel.m; sourceTree = "<group>"; };
+		9BA7FA6319E1A1B700ACE492 /* TTCounterLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTCounterLabel.h; sourceTree = "<group>"; };
+		9BA7FA6419E1A1B700ACE492 /* TTCounterLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTCounterLabel.m; sourceTree = "<group>"; };
+		9BA7FA6619E1A2C000ACE492 /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
+		9BA7FA6719E1A2C000ACE492 /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
 		9BD5B9C119E001DE002CFA2C /* FlatUIKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlatUIKit.h; sourceTree = "<group>"; };
 		9BD5B9C219E001DE002CFA2C /* FUIAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FUIAlertView.h; sourceTree = "<group>"; };
 		9BD5B9C319E001DE002CFA2C /* FUIAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FUIAlertView.m; sourceTree = "<group>"; };
@@ -195,6 +201,7 @@
 				9B2E89DE19E14AFD00BAFB3E /* TableViewCell.h */,
 				9B2E89DF19E14AFD00BAFB3E /* TableViewCell.m */,
 				9B44ADA019DFF538001CFDAE /* Main.storyboard */,
+				9BA7FA6219E1A1B700ACE492 /* Source */,
 				9B2E89A719E0D07B00BAFB3E /* ScoreLabel */,
 				9B44ADBF19DFF947001CFDAE /* ShineLabel */,
 				9BD5B9BF19E001DE002CFA2C /* Button */,
@@ -221,6 +228,17 @@
 				9B44ADBD19DFF943001CFDAE /* RQShineLabel.m */,
 			);
 			name = ShineLabel;
+			sourceTree = "<group>";
+		};
+		9BA7FA6219E1A1B700ACE492 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				9BA7FA6619E1A2C000ACE492 /* TTTAttributedLabel.h */,
+				9BA7FA6719E1A2C000ACE492 /* TTTAttributedLabel.m */,
+				9BA7FA6319E1A1B700ACE492 /* TTCounterLabel.h */,
+				9BA7FA6419E1A1B700ACE492 /* TTCounterLabel.m */,
+			);
+			path = Source;
 			sourceTree = "<group>";
 		};
 		9BD5B9BF19E001DE002CFA2C /* Button */ = {
@@ -396,6 +414,7 @@
 				9B2E89D319E0D3E200BAFB3E /* AAAAchievmentViewController.m in Sources */,
 				9BD5B9ED19E001DE002CFA2C /* FUISwitch.m in Sources */,
 				9B2E89CB19E0D3CB00BAFB3E /* AAAGamificationManager.m in Sources */,
+				9BA7FA6519E1A1B700ACE492 /* TTCounterLabel.m in Sources */,
 				9B2E89C919E0D3CB00BAFB3E /* AAAScoreView.m in Sources */,
 				9BD5B9F419E001DE002CFA2C /* UIPopoverController+FlatUI.m in Sources */,
 				9BD5B9F819E001DE002CFA2C /* UITabBar+FlatUI.m in Sources */,
@@ -411,6 +430,7 @@
 				9BD5B9F319E001DE002CFA2C /* UINavigationBar+FlatUI.m in Sources */,
 				9BD5B9E919E001DE002CFA2C /* FUIButton.m in Sources */,
 				9BD5B9F619E001DE002CFA2C /* UISlider+FlatUI.m in Sources */,
+				9BA7FA6819E1A2C000ACE492 /* TTTAttributedLabel.m in Sources */,
 				9B2E89D219E0D3E200BAFB3E /* AAAAChievement.m in Sources */,
 				9BD5B9F919E001DE002CFA2C /* UITableViewCell+FlatUI.m in Sources */,
 				9BD5B9EF19E001DE002CFA2C /* UIBarButtonItem+FlatUI.m in Sources */,

@@ -17,12 +17,13 @@
 
 #import "AAAGamificationManager.h"
 #import "TableViewCell.h"
+#import "TTCounterLabel.h"
 
 #import <Firebase/Firebase.h>
 #import <POP/POP.h>
 #import <FacebookSDK/FacebookSDK.h>
 
-@interface ViewController () <FUIAlertViewDelegate, FBLoginViewDelegate, UITableViewDataSource, UITableViewDelegate, TableViewCellDelegate>
+@interface ViewController () <FUIAlertViewDelegate, FBLoginViewDelegate, UITableViewDataSource, UITableViewDelegate, TableViewCellDelegate, TTCounterLabelDelegate,TTTAttributedLabelDelegate>
 @property (weak, nonatomic) IBOutlet FUIButton *tapButton;
 @property (weak, nonatomic) IBOutlet RQShineLabel *shineLabel;
 
@@ -42,6 +43,7 @@
 @property (weak, nonatomic) IBOutlet FBLoginView *loginView;
 @property (weak, nonatomic) IBOutlet UITableView *friendsTableVIew;
 @property (weak, nonatomic) IBOutlet FUIButton *inviteButton;
+@property (weak, nonatomic) IBOutlet TTCounterLabel *gameCountDownLabel;
 
 
 @property (strong, nonatomic) NSArray *friends;
@@ -107,6 +109,18 @@
     self.scoreLabel.hidden = YES;
     self.scoreChangeLabel.text = @"";
     self.scoreChangeLabel.hidden = YES;
+    
+//    self.gameCountDownLabel.hidden = YES;
+    self.gameCountDownLabel.countdownDelegate = self;
+    [self.gameCountDownLabel setBoldFont:[UIFont fontWithName:@"Avenir Next Condensed Medium" size:24]];
+    [self.gameCountDownLabel setRegularFont:[UIFont fontWithName:@"Avenir Next Condensed" size:24]];
+    [self.gameCountDownLabel setFont:[UIFont fontWithName:@"Avenir Next Condensed Medium" size:15]];
+    self.gameCountDownLabel.textColor = [UIColor blackColor];
+    self.gameCountDownLabel.startValue = 60000;
+    self.gameCountDownLabel.displayMode = kDisplayModeFull;
+    self.gameCountDownLabel.countDirection = kCountDirectionDown;
+    self.gameCountDownLabel.hidden = YES;
+    [self.gameCountDownLabel updateApperance];
     
     [self updateUiToNetural];
     self.tapButton.userInteractionEnabled = YES;
@@ -503,13 +517,25 @@
 
 - (void)gameStarts
 {
+    [self.gameCountDownLabel start];
     self.scoreLabel.hidden = NO;
+    self.gameCountDownLabel.hidden = NO;
     self.tapButton.userInteractionEnabled = YES;
     
     CGRect scoreLabelFrame = self.scoreLabel.frame;
     [self moveAnimation:self.scoreLabel
-                   from:CGRectMake(320, scoreLabelFrame.origin.y, scoreLabelFrame.size.width, scoreLabelFrame.size.height)
+                   from:CGRectMake(320, scoreLabelFrame.origin.y,
+                                   scoreLabelFrame.size.width, scoreLabelFrame.size.height)
                      to:self.scoreLabel.frame
+                  begin:0
+       springBounciness:10
+            springSpeed:5];
+    
+    CGRect countLabelFrame = self.gameCountDownLabel.frame;
+    [self moveAnimation:self.gameCountDownLabel
+                   from:CGRectMake(-countLabelFrame.size.width, countLabelFrame.origin.y,
+                                   countLabelFrame.size.width, countLabelFrame.size.height)
+                     to:self.gameCountDownLabel.frame
                   begin:0
        springBounciness:10
             springSpeed:5];
@@ -589,6 +615,10 @@
 }
 
 //Challenge
+- (void)countdownDidEndForSource:(TTCounterLabel *)source
+{
+    NSLog(@"ends");
+}
 
 - (void)showChallenge
 {
@@ -835,6 +865,34 @@
 - (void)cellTapped:(TableViewCell *)cell
 {
     
+}
+
+- (void)updateUIForState:(NSInteger)state withSource:(TTCounterLabel *)label {
+    switch (state) {
+//        case kTTCounterRunning:
+//            [_startStopButton setTitle:NSLocalizedString(@"Stop", @"Stop") forState:UIControlStateNormal];
+//            _resetButton.hidden = YES;
+//            break;
+//            
+//        case kTTCounterStopped:
+//            [_startStopButton setTitle:NSLocalizedString(@"Resume", @"Resume") forState:UIControlStateNormal];
+//            _resetButton.hidden = NO;
+//            break;
+//            
+//        case kTTCounterReset:
+//            [_startStopButton setTitle:NSLocalizedString(@"Start", @"Start") forState:UIControlStateNormal];
+//            _resetButton.hidden = YES;
+//            _startStopButton.hidden = NO;
+//            break;
+//            
+//        case kTTCounterEnded:
+//            _startStopButton.hidden = YES;
+//            _resetButton.hidden = NO;
+//            break;
+//            
+//        default:
+//            break;
+    }
 }
 
 @end
