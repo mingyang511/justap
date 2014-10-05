@@ -625,6 +625,7 @@
 - (void)gameEnds
 {
     [self.timer invalidate];
+    self.timer = NULL;
     NSInteger diff = self.score - self.opponentScore;
     FUIAlertView *alertView ;
     
